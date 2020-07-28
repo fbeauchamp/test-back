@@ -20,16 +20,18 @@ class GradeRepository extends ServiceEntityRepository
         parent::__construct($registry, Grade::class);
     }
 
-    public function getAverage(Student $student=null):array
+    public function getAverage(Student $student = null): array
     {
-        $query =  $this->createQueryBuilder('g')
+        $query = $this->createQueryBuilder('g')
         ->select('SUM(g.grade) as sum, COUNT(g.grade) as count');
-        if($student){
+        if ($student) {
             $query = $query->andWhere('g.student = :studentId')
             ->setParameter('studentId', $student->getId());
         }
+
         return $query->getQuery()->getScalarResult();
     }
+
     // /**
     //  * @return Grade[] Returns an array of Grade objects
     //  */

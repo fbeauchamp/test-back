@@ -73,14 +73,14 @@ class Grade implements \JsonSerializable
 
         return $this;
     }
+
     public function jsonSerialize()
     {
-
         return  [
-            'id'   => $this->getId(),
+            'id' => $this->getId(),
             'subject' => $this->getSubject(),
             'grade' => $this->getGrade(),
-            'studentId' => $this->getStudent()->getId()
+            'studentId' => $this->getStudent()->getId(),
         ];
     }
 }

@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
-
 /**
  * @ORM\Entity(repositoryClass=StudentRepository::class)
  */
@@ -118,15 +117,14 @@ class Student implements \JsonSerializable
 
         return $this;
     }
-    
+
     public function jsonSerialize()
     {
-
         return  [
-            'id'   => $this->getId(),
+            'id' => $this->getId(),
             'name' => $this->getName(),
             'surname' => $this->getSurname(),
-            'grades' => $this->getGrades()
+            'grades' => $this->getGrades(),
         ];
     }
 }
