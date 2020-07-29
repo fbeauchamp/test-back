@@ -10,11 +10,30 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class GradeController extends AbstractController
 {
     /**
+     * add a grade to an exiting student
      * @Route("/api/student/{studentId}/grade", name="add_grade",  methods={"POST"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="when student exists",
+     *     @SWG\Schema(
+     *         type="@Model(type=Student::class)"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="student not found"
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="missing subject, grade or grade not between 0 and 20"
+     * )
      */
     public function addGrade(string $studentId, Request $request): Response
     {
@@ -38,6 +57,7 @@ class GradeController extends AbstractController
     }
 
     /**
+     * compute the average grade of a student
      * @Route("/api/student/{studentId}/average", name="student_average",  methods={"GET"})
      */
     public function studentAverage(string $studentId): Response
@@ -60,6 +80,7 @@ class GradeController extends AbstractController
     }
 
     /**
+     * compute the average grade of all students
      * @Route("/api/average", name="average",  methods={"GET"})
      */
     public function average(): Response

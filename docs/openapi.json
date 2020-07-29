@@ -1,0 +1,137 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Backend skills demonstration",
+        "description": "This will be an awesome opportunity!",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/student/{studentId}/grade": {
+            "post": {
+                "summary": "add a grade to an exiting student",
+                "parameters": [
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "when student exists",
+                        "schema": {
+                            "type": "@Model(type=Student::class)"
+                        }
+                    },
+                    "404": {
+                        "description": "student not found"
+                    },
+                    "500": {
+                        "description": "missing subject, grade or grade not between 0 and 20"
+                    }
+                }
+            }
+        },
+        "/api/student/{id}": {
+            "get": {
+                "summary": "get a student from api",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "when student exists",
+                        "schema": {
+                            "type": "@Model(type=Student::class)"
+                        }
+                    },
+                    "404": {
+                        "description": "student not found"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new student or update an existing one by id .",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the created user on success",
+                        "schema": {
+                            "type": "@Model(type=Student::class)"
+                        }
+                    },
+                    "500": {
+                        "description": "when missing a field during student creation"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a student",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/student/{studentId}/average": {
+            "get": {
+                "summary": "compute the average grade of a student",
+                "parameters": [
+                    {
+                        "name": "studentId",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/average": {
+            "get": {
+                "summary": "compute the average grade of all students",
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/doc.json": {
+            "get": {
+                "responses": {
+                    "default": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "host": "localhost"
+}

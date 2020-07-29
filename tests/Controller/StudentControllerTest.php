@@ -9,7 +9,7 @@ class StudentControllerTest extends WebTestCase
     public function testGet()
     {
         $client = static::createClient();
-        $client->request('GET', '/student/1');
+        $client->request('GET', '/api/student/1');
 
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -18,7 +18,7 @@ class StudentControllerTest extends WebTestCase
     public function testGetFail()
     {
         $client = static::createClient();
-        $client->request('GET', '/student/94581');
+        $client->request('GET', '/api/student/94581');
         $this->assertTrue($client->getResponse()->isNotFound());
     }
 
@@ -32,7 +32,7 @@ class StudentControllerTest extends WebTestCase
         } catch (\Throwable $t) {
             //$this->assertEquals(500, $client->getResponse()->getStatusCode());
         }
-        $client->request('POST', '/student', ['surname' => 'test', 'name' => 'test', 'birthdate' => '2008-01-10']);
+        $client->request('POST', '/api/student', ['surname' => 'test', 'name' => 'test', 'birthdate' => '2008-01-10']);
         $data = json_decode($client->getResponse()->getContent());
         $this->assertGreaterThan(0, $data->id);
     }

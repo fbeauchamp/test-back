@@ -10,11 +10,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Swagger\Annotations as SWG;
 
 class StudentController extends AbstractController
 {
     /**
+     * Create a new student or update an existing one by id .
+     *
      * @Route("/api/student/{id?}", name="create_student",  methods={"POST"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the created user on success",
+     *     @SWG\Schema(
+     *         type="@Model(type=Student::class)"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="when missing a field during student creation"
+     * )
      */
     public function createStudent(?string $id, Request $request, SerializerInterface $serializer): Response
     {
@@ -34,7 +50,19 @@ class StudentController extends AbstractController
     }
 
     /**
+     * get a student from api
      * @Route("/api/student/{id}", name="get_student",  methods={"GET"})
+     *  * @SWG\Response(
+     *     response=200,
+     *     description="when student exists",
+     *     @SWG\Schema(
+     *         type="@Model(type=Student::class)"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=404,
+     *     description="student not found"
+     * )
      */
     public function getStudent(string $id, SerializerInterface $serializer): Response
     {
@@ -48,6 +76,7 @@ class StudentController extends AbstractController
     }
 
     /**
+     * Delete a student
      * @Route("/api/student/{id}", name="delete_student",  methods={"DELETE"})
      */
     public function deleteStudent(string $id): Response
