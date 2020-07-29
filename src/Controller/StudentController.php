@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class StudentController extends AbstractController
 {
     /**
-     * @Route("/student/{id?}", name="create_student",  methods={"POST"})
+     * @Route("/api/student/{id?}", name="create_student",  methods={"POST"})
      */
     public function createStudent(?string $id, Request $request, SerializerInterface $serializer): Response
     {
@@ -34,7 +34,7 @@ class StudentController extends AbstractController
     }
 
     /**
-     * @Route("/student/{id}", name="get_student",  methods={"GET"})
+     * @Route("/api/student/{id}", name="get_student",  methods={"GET"})
      */
     public function getStudent(string $id, SerializerInterface $serializer): Response
     {
@@ -48,7 +48,7 @@ class StudentController extends AbstractController
     }
 
     /**
-     * @Route("/student/{id}", name="delete_student",  methods={"DELETE"})
+     * @Route("/api/student/{id}", name="delete_student",  methods={"DELETE"})
      */
     public function deleteStudent(string $id): Response
     {

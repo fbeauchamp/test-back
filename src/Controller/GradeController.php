@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GradeController extends AbstractController
 {
     /**
-     * @Route("/student/{studentId}/grade", name="add_grade",  methods={"POST"})
+     * @Route("/api/student/{studentId}/grade", name="add_grade",  methods={"POST"})
      */
     public function addGrade(string $studentId, Request $request): Response
     {
@@ -38,7 +38,7 @@ class GradeController extends AbstractController
     }
 
     /**
-     * @Route("/student/{studentId}/average", name="student_average",  methods={"GET"})
+     * @Route("/api/student/{studentId}/average", name="student_average",  methods={"GET"})
      */
     public function studentAverage(string $studentId): Response
     {
@@ -60,7 +60,7 @@ class GradeController extends AbstractController
     }
 
     /**
-     * @Route("/average", name="average",  methods={"GET"})
+     * @Route("/api/average", name="average",  methods={"GET"})
      */
     public function average(): Response
     {
