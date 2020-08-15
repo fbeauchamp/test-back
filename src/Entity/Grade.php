@@ -21,11 +21,13 @@ class Grade
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull
      */
     private $subject;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotNull
      * @Assert\Range(
      *      min = 0,
      *      max = 20,

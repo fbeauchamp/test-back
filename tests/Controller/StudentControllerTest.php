@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class StudentControllerTest extends WebTestCase
 {
+    /** 
+     * @todo : shuold load an empty base for test 
+     * 
+    */
     public function testGet()
     {
         $client = static::createClient();
@@ -26,14 +30,23 @@ class StudentControllerTest extends WebTestCase
     {
         $client = static::createClient();
         //missing name
-        // how can I test a failing creation ?
-        try {
-            // $client->request('POST', '/student',["surname"=>"test","birthDate"=>"2008-01-10"]);
-        } catch (\Throwable $t) {
-            //$this->assertEquals(500, $client->getResponse()->getStatusCode());
-        }
+        $client->request('POST', '/api/student',["surname"=>"test","birthDate"=>"2008-01-10"]);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+        //missing surname
+        $client->request('POST', '/api/student',["name"=>"test","birthDate"=>"2008-01-10"]);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+        //missing date
+        $client->request('POST', '/api/student',["name"=>"test","suernam"=>"2008-01-10"]);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+ 
         $client->request('POST', '/api/student', ['surname' => 'test', 'name' => 'test', 'birthdate' => '2008-01-10']);
         $data = json_decode($client->getResponse()->getContent());
         $this->assertGreaterThan(0, $data->id);
+
+        // update created student
+        
+        $client->request('POST', '/api/student/'.$data->id, ['surname'=>'flo']);
+        $data = json_decode($client->getResponse()->getContent());
+        $this->assertEquals('flo', $data->surname);
     }
 }
