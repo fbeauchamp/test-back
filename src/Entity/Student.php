@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 /**
  * @ORM\Entity(repositoryClass=StudentRepository::class)
  */
-class Student implements \JsonSerializable
+class Student
 {
     /**
      * @ORM\Id()
@@ -116,15 +116,5 @@ class Student implements \JsonSerializable
         }
 
         return $this;
-    }
-
-    public function jsonSerialize()
-    {
-        return  [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'surname' => $this->getSurname(),
-            'grades' => $this->getGrades(),
-        ];
     }
 }

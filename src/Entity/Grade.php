@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=GradeRepository::class)
  */
-class Grade implements \JsonSerializable
+class Grade
 {
     /**
      * @ORM\Id()
@@ -72,15 +72,5 @@ class Grade implements \JsonSerializable
         $this->student = $student;
 
         return $this;
-    }
-
-    public function jsonSerialize()
-    {
-        return  [
-            'id' => $this->getId(),
-            'subject' => $this->getSubject(),
-            'grade' => $this->getGrade(),
-            'studentId' => $this->getStudent()->getId(),
-        ];
     }
 }

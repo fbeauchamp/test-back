@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Student;
 use Datetime;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
@@ -32,7 +37,7 @@ class StudentController extends AbstractController
      *     description="when missing a field during student creation"
      * )
      */
-    public function createStudent(?string $id, Request $request, SerializerInterface $serializer): Response
+    public function createStudent(?string $id, Request $request): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $student = $id ? $this->getDoctrine()->getRepository(Student::class)->find($id) : new Student();
@@ -64,14 +69,13 @@ class StudentController extends AbstractController
      *     description="student not found"
      * )
      */
-    public function getStudent(string $id, SerializerInterface $serializer): Response
+    public function getStudent(string $id): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $student = $this->getDoctrine()->getRepository(Student::class)->find($id);
         if (!$student) {
             throw $this->createNotFoundException('The student does not exist');
         }
-
         return $this->json($student);
     }
 
