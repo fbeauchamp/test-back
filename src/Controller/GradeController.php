@@ -8,8 +8,6 @@ use App\Entity\Student;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -43,7 +41,7 @@ class GradeController extends AbstractController
         
         $student = $this->getDoctrine()->getRepository(Student::class)->find($studentId);
         if (!$student) {
-            throw new NotFoundHttpException('The student does not exist');
+            return  $this->json(array("errors"=>"The student doesn't exists"), 404);
         }
         $grade = new Grade();
         $grade->setStudent($student);
@@ -71,7 +69,7 @@ class GradeController extends AbstractController
 
         $student = $this->getDoctrine()->getRepository(Student::class)->find($studentId);
         if (!$student) {
-            throw new NotFoundHttpException('The student does not exist');
+            return  $this->json(array("errors"=>"The student doesn't exists"), 404);
         }
         $average = $this->getDoctrine()->getRepository(Grade::class)->getAverage($student);
         $count = $average[0]['count'];

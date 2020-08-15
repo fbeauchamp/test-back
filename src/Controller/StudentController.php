@@ -9,7 +9,6 @@ use Datetime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -43,7 +42,7 @@ class StudentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $student = $id ? $this->getDoctrine()->getRepository(Student::class)->find($id) : new Student();
         if ($id && !$student) {
-            throw $this->createNotFoundException('The student does not exist');
+            return  $this->json(array("errors"=>"The student doesn't exists"), 404);
         }
         $form = $this->createForm(StudentType::class, $student);
         $data = $request->request->all();
@@ -79,7 +78,7 @@ class StudentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $student = $this->getDoctrine()->getRepository(Student::class)->find($id);
         if (!$student) {
-            throw $this->createNotFoundException('The student does not exist');
+            return  $this->json(array("errors"=>"The student doesn't exists"), 404);
         }
         return $this->json($student);
     }
@@ -93,7 +92,7 @@ class StudentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $student = $this->getDoctrine()->getRepository(Student::class)->find($id);
         if (!$student) {
-            throw new NotFoundHttpException('The student does not exist');
+            return  $this->json(array("errors"=>"The student doesn't exists"), 404);
         }
         $entityManager->remove($student);
 
