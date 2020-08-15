@@ -6,7 +6,6 @@ use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=StudentRepository::class)
@@ -37,7 +36,6 @@ class Student
 
     /**
      * @ORM\OneToMany(targetEntity=Grade::class, mappedBy="student", orphanRemoval=true)
-     * @MaxDepth(1)
      */
     private $grades;
 

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\GradeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=GradeRepository::class)
  */
@@ -24,6 +26,11 @@ class Grade
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 20,
+     *      notInRangeMessage = "A student grade should be between {{ min }} and {{ max }}",
+     * )
      */
     private $grade;
 

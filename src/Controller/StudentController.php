@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Student;
+use App\Form\StudentType;
 use Datetime;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,14 +45,18 @@ class StudentController extends AbstractController
         if ($id && !$student) {
             throw $this->createNotFoundException('The student does not exist');
         }
-        $student->setName($request->get('name', $student->getName()));
-        $student->setSurname($request->get('surname', $student->getSurname()));
-        $d = DateTime::createFromFormat('Y-m-d', $request->get('birthdate'));
-        $student->setBirthDate($d ? $d : $student->getBirthDate());
-        $entityManager->persist($student);
-        $entityManager->flush();
+        $form = $this->createForm(StudentType::class, $student);
+        $data = $request->request->all();
+        $form->submit($data, false);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $student = $form->getData();
+           
+            $entityManager->persist($student);
+            $entityManager->flush();
 
-        return $this->json($student);
+            return $this->json($student);
+        }
+        return  $this->json(array("errors"=>(string)$form->getErrors(true, false)), 400);
     }
 
     /**

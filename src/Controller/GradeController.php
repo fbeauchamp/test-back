@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Grade;
+use App\Form\GradeType;
 use App\Entity\Student;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GradeController extends AbstractController
 {
@@ -35,25 +37,27 @@ class GradeController extends AbstractController
      *     description="missing subject, grade or grade not between 0 and 20"
      * )
      */
-    public function addGrade(string $studentId, Request $request): Response
+    public function addGrade(string $studentId, Request $request, ValidatorInterface $validator): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        $grade = new Grade();
+        
         $student = $this->getDoctrine()->getRepository(Student::class)->find($studentId);
         if (!$student) {
             throw new NotFoundHttpException('The student does not exist');
         }
-        $newGrade = intval($request->get('grade'), 10);
-        if ($newGrade > 20 || $newGrade < 0) {
-            throw new BadRequestHttpException('acceptable values for grade are integer between 0 and 20');
-        }
-        $grade->setGrade($newGrade);
-        $grade->setSubject($request->get('subject'));
-        $student->addGrade($grade);
-        $entityManager->persist($grade);
-        $entityManager->flush();
+        $grade = new Grade();
+        $grade->setStudent($student);
+        $form = $this->createForm(GradeType::class, $grade);
+        $form->submit(array_merge(['student' => $studentId], $request->request->all()));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $grade = $form->getData();
+           
+            $entityManager->persist($grade);
+            $entityManager->flush();
 
-        return $this->json($grade);
+            return $this->json($grade);
+        }
+        return  $this->json(array("errors"=>(string)$form->getErrors(true, false)), 400);
     }
 
     /**
