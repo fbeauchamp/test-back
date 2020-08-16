@@ -19,3 +19,7 @@
 /.php_cs
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+/docker/logs/nginx/*.log
+/docker/database/data/*
+!/docker/database/data/.gitkeep
